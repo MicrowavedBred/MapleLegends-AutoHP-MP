@@ -2,8 +2,6 @@ import cv2
 import numpy as np
 import os
 import autoit
-#import time
-#import keyboard
 import pygetwindow as gw
 import pyautogui
 
@@ -19,15 +17,14 @@ blue_action_taken = False
 # Window title of your software (replace with the actual title)
 TARGET_WINDOW_TITLE = "MapleLegends ("
 
+window_title = TARGET_WINDOW_TITLE  # Replace with your actual window title
+x_offset = 412      #
+y_offset = 1404     #
+width = 400         #
+height = 28         #
+
 #script_active = False
 message_displayed = False
-
-#def toggle_script():
-    #global script_active
-    #script_active = not script_active
-    #print(f"Script is now {'active' if script_active else 'inactive'}")
-
-#keyboard.add_hotkey('F10', toggle_script)
 
 def get_window_region(window_title, x_offset, y_offset, width, height):
 
@@ -104,42 +101,34 @@ def visualize_detection(image, contours):
     return debug_image
 
 # Example usage
-window_title = TARGET_WINDOW_TITLE  # Replace with your actual window title
-x_offset = 412      #
-y_offset = 1404     #
-width = 400         #
-height = 28         #
+
 
 def main():
-    window_title = "MapleLegends"  # Replace with your actual window title
-    x_offset = 412      #
-    y_offset = 1404     #
-    width = 400         #
-    height = 28         #
+    global RED_THRESHOLD, BLUE_THRESHOLD, TARGET_WINDOW_TITLE, x_offset, y_offset, width, height
+    window_title = TARGET_WINDOW_TITLE
     screenshot_filename = 'temp_screenshot.png'
     try:
-        print("working?")
         if autoit.win_active(TARGET_WINDOW_TITLE):
-            print("in focus")
+            message_displayed = False
             region = get_window_region(window_title, x_offset, y_offset, width, height)
             if region:
-                    # Delete previous screenshot if it exists
-                    if os.path.exists(screenshot_filename):
-                        os.remove(screenshot_filename)
-                    screen = capture_screen(region, screenshot_filename)
-                    if screen is not None:
-                        #os.system("cls")
-                        red_level, blue_level = analyze_bars(screen)
-                        print(f"Red level: {red_level:.2f}%, Blue level: {blue_level:.2f}%")
-                        # Check red level and perform action if needed
-                        if red_level < RED_THRESHOLD and not red_action_taken:
-                            autoit.send("{INSERT}")
-                            #time.sleep(0.5)
-                        # Check blue level and perform action if needed
-                    if blue_level < BLUE_THRESHOLD and not blue_action_taken:
-                        autoit.send("{HOME}")
+                # Delete previous screenshot if it exists
+                if os.path.exists(screenshot_filename):
+                    os.remove(screenshot_filename)
+                screen = capture_screen(region, screenshot_filename)
+                if screen is not None:
+                    red_level, blue_level = analyze_bars(screen)
+                    # Check red level and perform action if needed
+                    if red_level < RED_THRESHOLD and not red_action_taken:
+                        autoit.send("{INSERT}")
                         #time.sleep(0.5)
-                    
+                    # Check blue level and perform action if needed
+                if blue_level < BLUE_THRESHOLD and not blue_action_taken:
+                    autoit.send("{HOME}")
+                    #time.sleep(0.5)
+                return red_level, blue_level
+            return None
+
                             
     except KeyboardInterrupt:
         print("Script terminated by user")
