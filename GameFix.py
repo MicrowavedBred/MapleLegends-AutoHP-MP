@@ -4,10 +4,8 @@ import AutoHP
 import keyboard
 import threading
 import queue
-import pyautogui
 import win32gui
 import win32con
-import time
 
 class ExpandedGameFix:
     def __init__(self, root):
