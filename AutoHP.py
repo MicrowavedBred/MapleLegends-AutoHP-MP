@@ -40,6 +40,7 @@ def get_window_region(window_title, x_offset, y_offset, width, height):
         print(f"Window with title '{window_title}' not found.")
         return None
 
+
 def capture_screen(region, filename='temp_screenshot.png'):
     if region:
         screenshot = pyautogui.screenshot(region=region)
@@ -48,6 +49,7 @@ def capture_screen(region, filename='temp_screenshot.png'):
         return img
     else:
         return None
+    
     
 def analyze_bars(image):
     height, width = image.shape[:2]
@@ -95,13 +97,14 @@ def analyze_bars(image):
 
     return red_level, blue_level
 
+
 def visualize_detection(image, contours):
     debug_image = image.copy()
     cv2.drawContours(debug_image, contours, -1, (0, 255, 0), 2)
     return debug_image
 
 # Example usage
-window_title = "MapleLegends"  # Replace with your actual window title
+window_title = TARGET_WINDOW_TITLE  # Replace with your actual window title
 x_offset = 412      #
 y_offset = 1404     #
 width = 400         #
